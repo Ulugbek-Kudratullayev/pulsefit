@@ -1,0 +1,410 @@
+[
+  {
+    "model": "workouts.workoutplan",
+    "pk": 1,
+    "fields": {
+      "slug": "beginner-full-body",
+      "name_uz": "Boshlovchi - To'liq tana",
+      "name_ru": "Новичок - Всё тело",
+      "name_en": "Beginner - Full Body",
+      "description_uz": "Yangi boshlovchilar uchun 4 haftalik to'liq tana mashqi. Haftada 3 marta. Uy sharoitida bemalol bajarish mumkin.",
+      "description_ru": "4 недели для начинающих, 3 раза в неделю.",
+      "description_en": "4-week beginner full body program, 3x per week.",
+      "cover_url": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800",
+      "level": "beginner",
+      "total_days": 12,
+      "workouts_per_week": 3,
+      "target_goal": "maintain",
+      "estimated_duration": 30,
+      "is_active": true,
+      "created_at": "2026-05-04T10:00:00Z"
+    }
+  },
+  {
+    "model": "workouts.workoutplan",
+    "pk": 2,
+    "fields": {
+      "slug": "fat-loss-30-days",
+      "name_uz": "30 kunda vazn yo'qotish",
+      "name_ru": "30 дней - похудение",
+      "name_en": "30-Day Fat Loss",
+      "description_uz": "Intensiv kardio + qorin mashqlari kombinatsiyasi. Har kuni 20 daqiqa.",
+      "description_ru": "",
+      "description_en": "",
+      "cover_url": "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?w=800",
+      "level": "intermediate",
+      "total_days": 30,
+      "workouts_per_week": 6,
+      "target_goal": "lose",
+      "estimated_duration": 25,
+      "is_active": true,
+      "created_at": "2026-05-04T10:00:00Z"
+    }
+  },
+  {
+    "model": "workouts.workoutplan",
+    "pk": 3,
+    "fields": {
+      "slug": "muscle-gain-8-weeks",
+      "name_uz": "8 hafta - mushak oshirish",
+      "name_ru": "8 недель - набор массы",
+      "name_en": "8-Week Muscle Gain",
+      "description_uz": "Gantel + uy sharoiti uchun mushak oshirish dasturi. 4 marta haftada.",
+      "description_ru": "",
+      "description_en": "",
+      "cover_url": "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800",
+      "level": "intermediate",
+      "total_days": 32,
+      "workouts_per_week": 4,
+      "target_goal": "gain",
+      "estimated_duration": 45,
+      "is_active": true,
+      "created_at": "2026-05-04T10:00:00Z"
+    }
+  },
+  {
+    "model": "workouts.workoutplan",
+    "pk": 4,
+    "fields": {
+      "slug": "abs-challenge",
+      "name_uz": "21 kun - qorin challenge",
+      "name_ru": "21 день - пресс",
+      "name_en": "21-Day Abs Challenge",
+      "description_uz": "Faqat qorin mushaklari uchun, har kuni 10 daqiqa.",
+      "description_ru": "",
+      "description_en": "",
+      "cover_url": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800",
+      "level": "beginner",
+      "total_days": 21,
+      "workouts_per_week": 7,
+      "target_goal": "maintain",
+      "estimated_duration": 10,
+      "is_active": true,
+      "created_at": "2026-05-04T10:00:00Z"
+    }
+  },
+  {
+    "model": "workouts.workoutday",
+    "pk": 1,
+    "fields": {
+      "plan": 1,
+      "day_number": 1,
+      "title_uz": "Ko'krak va trisepslar",
+      "title_ru": "",
+      "title_en": "",
+      "notes": ""
+    }
+  },
+  {
+    "model": "workouts.workoutday",
+    "pk": 2,
+    "fields": {
+      "plan": 1,
+      "day_number": 2,
+      "title_uz": "Oyoq va glute",
+      "title_ru": "",
+      "title_en": "",
+      "notes": ""
+    }
+  },
+  {
+    "model": "workouts.workoutday",
+    "pk": 3,
+    "fields": {
+      "plan": 1,
+      "day_number": 3,
+      "title_uz": "Orqa va bitseps",
+      "title_ru": "",
+      "title_en": "",
+      "notes": ""
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 1,
+    "fields": {
+      "day": 1,
+      "exercise": 1,
+      "sets": 3,
+      "reps": 12,
+      "rest_seconds": 60,
+      "order": 1
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 2,
+    "fields": {
+      "day": 1,
+      "exercise": 2,
+      "sets": 3,
+      "reps": 15,
+      "rest_seconds": 45,
+      "order": 2
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 3,
+    "fields": {
+      "day": 1,
+      "exercise": 53,
+      "sets": 3,
+      "reps": 12,
+      "rest_seconds": 60,
+      "order": 3
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 4,
+    "fields": {
+      "day": 1,
+      "exercise": 30,
+      "sets": 3,
+      "reps": 1,
+      "rest_seconds": 45,
+      "order": 4
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 5,
+    "fields": {
+      "day": 2,
+      "exercise": 20,
+      "sets": 4,
+      "reps": 15,
+      "rest_seconds": 60,
+      "order": 1
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 6,
+    "fields": {
+      "day": 2,
+      "exercise": 21,
+      "sets": 3,
+      "reps": 12,
+      "rest_seconds": 60,
+      "order": 2
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 7,
+    "fields": {
+      "day": 2,
+      "exercise": 25,
+      "sets": 3,
+      "reps": 15,
+      "rest_seconds": 45,
+      "order": 3
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 8,
+    "fields": {
+      "day": 2,
+      "exercise": 24,
+      "sets": 3,
+      "reps": 20,
+      "rest_seconds": 30,
+      "order": 4
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 9,
+    "fields": {
+      "day": 3,
+      "exercise": 12,
+      "sets": 3,
+      "reps": 15,
+      "rest_seconds": 45,
+      "order": 1
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 10,
+    "fields": {
+      "day": 3,
+      "exercise": 11,
+      "sets": 3,
+      "reps": 12,
+      "rest_seconds": 60,
+      "order": 2
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 11,
+    "fields": {
+      "day": 3,
+      "exercise": 52,
+      "sets": 3,
+      "reps": 12,
+      "rest_seconds": 45,
+      "order": 3
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 12,
+    "fields": {
+      "day": 3,
+      "exercise": 54,
+      "sets": 3,
+      "reps": 12,
+      "rest_seconds": 45,
+      "order": 4
+    }
+  },
+  {
+    "model": "workouts.workoutday",
+    "pk": 4,
+    "fields": {
+      "plan": 2,
+      "day_number": 1,
+      "title_uz": "Kardio + qorin",
+      "title_ru": "",
+      "title_en": "",
+      "notes": ""
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 13,
+    "fields": {
+      "day": 4,
+      "exercise": 40,
+      "sets": 3,
+      "reps": 1,
+      "rest_seconds": 30,
+      "order": 1
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 14,
+    "fields": {
+      "day": 4,
+      "exercise": 41,
+      "sets": 3,
+      "reps": 1,
+      "rest_seconds": 30,
+      "order": 2
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 15,
+    "fields": {
+      "day": 4,
+      "exercise": 42,
+      "sets": 3,
+      "reps": 10,
+      "rest_seconds": 45,
+      "order": 3
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 16,
+    "fields": {
+      "day": 4,
+      "exercise": 30,
+      "sets": 3,
+      "reps": 1,
+      "rest_seconds": 45,
+      "order": 4
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 17,
+    "fields": {
+      "day": 4,
+      "exercise": 31,
+      "sets": 3,
+      "reps": 20,
+      "rest_seconds": 30,
+      "order": 5
+    }
+  },
+  {
+    "model": "workouts.workoutday",
+    "pk": 5,
+    "fields": {
+      "plan": 4,
+      "day_number": 1,
+      "title_uz": "Qorin - 1 kun",
+      "title_ru": "",
+      "title_en": "",
+      "notes": ""
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 18,
+    "fields": {
+      "day": 5,
+      "exercise": 31,
+      "sets": 3,
+      "reps": 15,
+      "rest_seconds": 30,
+      "order": 1
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 19,
+    "fields": {
+      "day": 5,
+      "exercise": 32,
+      "sets": 3,
+      "reps": 12,
+      "rest_seconds": 30,
+      "order": 2
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 20,
+    "fields": {
+      "day": 5,
+      "exercise": 33,
+      "sets": 3,
+      "reps": 20,
+      "rest_seconds": 30,
+      "order": 3
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 21,
+    "fields": {
+      "day": 5,
+      "exercise": 34,
+      "sets": 3,
+      "reps": 20,
+      "rest_seconds": 30,
+      "order": 4
+    }
+  },
+  {
+    "model": "workouts.workoutdayexercise",
+    "pk": 22,
+    "fields": {
+      "day": 5,
+      "exercise": 30,
+      "sets": 3,
+      "reps": 1,
+      "rest_seconds": 45,
+      "order": 5
+    }
+  }
+]

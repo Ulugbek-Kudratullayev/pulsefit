@@ -1,0 +1,80 @@
+[
+  {
+    "model": "exercises.exercisecategory",
+    "pk": 1,
+    "fields": {
+      "slug": "chest",
+      "name_uz": "Ko'krak",
+      "name_ru": "Грудь",
+      "name_en": "Chest",
+      "icon": "dumbbell",
+      "color": "#EF4444",
+      "order": 1
+    }
+  },
+  {
+    "model": "exercises.exercisecategory",
+    "pk": 2,
+    "fields": {
+      "slug": "back",
+      "name_uz": "Orqa",
+      "name_ru": "Спина",
+      "name_en": "Back",
+      "icon": "human-handsup",
+      "color": "#3B82F6",
+      "order": 2
+    }
+  },
+  {
+    "model": "exercises.exercisecategory",
+    "pk": 3,
+    "fields": {
+      "slug": "legs",
+      "name_uz": "Oyoq",
+      "name_ru": "Ноги",
+      "name_en": "Legs",
+      "icon": "run",
+      "color": "#8B5CF6",
+      "order": 3
+    }
+  },
+  {
+    "model": "exercises.exercisecategory",
+    "pk": 4,
+    "fields": {
+      "slug": "abs",
+      "name_uz": "Qorin",
+      "name_ru": "Пресс",
+      "name_en": "Abs",
+      "icon": "weight-lifter",
+      "color": "#F59E0B",
+      "order": 4
+    }
+  },
+  {
+    "model": "exercises.exercisecategory",
+    "pk": 5,
+    "fields": {
+      "slug": "cardio",
+      "name_uz": "Kardio",
+      "name_ru": "Кардио",
+      "name_en": "Cardio",
+      "icon": "heart-pulse",
+      "color": "#EC4899",
+      "order": 5
+    }
+  },
+  {
+    "model": "exercises.exercisecategory",
+    "pk": 6,
+    "fields": {
+      "slug": "shoulders-arms",
+      "name_uz": "Yelka va qo'l",
+      "name_ru": "Плечи и руки",
+      "name_en": "Shoulders & Arms",
+      "icon": "arm-flex",
+      "color": "#14B8A6",
+      "order": 6
+    }
+  }
+]
