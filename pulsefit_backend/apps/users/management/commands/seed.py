@@ -10,10 +10,9 @@ class Command(BaseCommand):
     help = "PulseFit ma'lumotlarini SQLite'ga yuklash (kategoriya, mashq, dastur, taom)"
 
     def handle(self, *args, **options):
-        self.stdout.write(self.style.NOTICE("Migratsiyalar yaratilmoqda..."))
-        call_command('makemigrations', verbosity=0)
-        self.stdout.write(self.style.NOTICE("Migratsiyalar qo'llanmoqda..."))
-        call_command('migrate', verbosity=0)
+        # Migratsiyalar `Procfile`'dagi web buyrug'ida alohida ishlaydi.
+        # Bu yerda faqat fixturelarni yuklaymiz.
+        pass
 
         files = [
             'fixtures/01_categories.json',
