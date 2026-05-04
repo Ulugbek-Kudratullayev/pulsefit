@@ -117,13 +117,10 @@ else:
 AUTH_USER_MODEL = 'users.User'
 
 
-# Password validation
+# Password validation — kurs ishi uchun yumshatilgan
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
      'OPTIONS': {'min_length': 6}},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 
@@ -233,6 +230,13 @@ SPECTACULAR_SETTINGS = {
     'COMPONENT_SPLIT_REQUEST': True,
     'CONTACT': {'name': 'PulseFit Dev', 'email': 'support@pulsefit.uz'},
     'LICENSE': {'name': 'MIT'},
+    # Bir xil enum nomli maydonlarni hal qilish
+    'ENUM_NAME_OVERRIDES': {
+        'ExerciseLevelEnum': 'apps.exercises.models.Exercise.DIFFICULTY',
+        'WorkoutPlanLevelEnum': 'apps.workouts.models.WorkoutPlan.LEVEL',
+        'WorkoutGoalEnum': 'apps.workouts.models.WorkoutPlan.GOAL',
+        'ProfileGoalEnum': 'apps.users.models.UserProfile.GOAL_CHOICES',
+    },
 }
 
 

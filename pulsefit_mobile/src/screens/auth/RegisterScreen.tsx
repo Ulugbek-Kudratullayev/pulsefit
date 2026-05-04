@@ -38,6 +38,19 @@ export default function RegisterScreen() {
     defaultValues: { full_name: '', email: '', password: '', password_confirm: '' },
   });
 
+  const translateError = (msg: string): string => {
+    const t: Record<string, string> = {
+      'This password is too common.': 'Bu parol juda oddiy. Murakkabroq parol tanlang.',
+      'This password is too short. It must contain at least 6 characters.':
+        'Parol juda qisqa. Kamida 6 ta belgi bo\'lsin.',
+      'This password is entirely numeric.': 'Parol faqat raqamlardan iborat bo\'la olmaydi.',
+      'user with this email already exists.':
+        'Bu email allaqachon ro\'yxatdan o\'tgan.',
+      'Enter a valid email address.': 'To\'g\'ri email kiriting.',
+    };
+    return t[msg] || msg;
+  };
+
   const onSubmit = async (data: FormData) => {
     setLoading(true);
     try {
@@ -45,9 +58,19 @@ export default function RegisterScreen() {
       router.replace('/(tabs)');
     } catch (e: any) {
       const errors = e?.response?.data;
-      let msg = "Ro'yxatdan o'tishda xatolik";
-      if (errors?.email?.[0]) msg = errors.email[0];
-      else if (errors?.password?.[0]) msg = errors.password[0];
+      const messages: string[] = [];
+      if (errors && typeof errors === 'object') {
+        for (const [_field, value] of Object.entries(errors)) {
+          if (Array.isArray(value)) {
+            value.forEach((m) => messages.push(translateError(String(m))));
+          } else if (typeof value === 'string') {
+            messages.push(translateError(value));
+          }
+        }
+      }
+      const msg = messages.length > 0
+        ? messages.join('\n')
+        : "Ro'yxatdan o'tishda xatolik";
       Alert.alert('Xatolik', msg);
     } finally {
       setLoading(false);
