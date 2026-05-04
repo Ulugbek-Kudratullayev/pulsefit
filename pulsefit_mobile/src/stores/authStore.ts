@@ -22,16 +22,21 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   isLoading: true,
 
   bootstrap: async () => {
-    const access = await getAccessToken();
-    if (!access) {
-      set({ isLoading: false, isAuthenticated: false, user: null });
-      return;
-    }
     try {
-      const user = await authApi.me();
-      set({ user, isAuthenticated: true, isLoading: false });
+      const access = await getAccessToken();
+      if (!access) {
+        set({ isLoading: false, isAuthenticated: false, user: null });
+        return;
+      }
+      try {
+        const user = await authApi.me();
+        set({ user, isAuthenticated: true, isLoading: false });
+      } catch {
+        await clearTokens().catch(() => {});
+        set({ isLoading: false, isAuthenticated: false, user: null });
+      }
     } catch {
-      await clearTokens();
+      // Storage xatosi (web inkognito rejimi va h.k.) — istalgan holatda loading'ni o'chirish
       set({ isLoading: false, isAuthenticated: false, user: null });
     }
   },

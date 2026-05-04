@@ -1,18 +1,12 @@
-import React, { useEffect } from 'react';
-import { Platform } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Platform, ActivityIndicator, View } from 'react-native';
 import { Stack, useRouter, useSegments } from 'expo-router';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ActivityIndicator, View } from 'react-native';
 
 import '@/lib/i18n';
 import { useAuthStore } from '@/stores/authStore';
-import { useTheme } from '@/hooks/useTheme';
+import { useTheme, useThemeBootstrap } from '@/hooks/useTheme';
 import { storage, STORAGE_KEYS } from '@/lib/storage';
-
-if (Platform.OS !== 'web') {
-  require('react-native-gesture-handler');
-}
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,25 +18,41 @@ const queryClient = new QueryClient({
   },
 });
 
+// Native: GestureHandler, Web: oddiy View
+const RootContainer: React.ComponentType<{ children: React.ReactNode; style?: any }> =
+  Platform.OS === 'web'
+    ? ({ children, style }) => <View style={style}>{children}</View>
+    : (() => {
+        require('react-native-gesture-handler');
+        return require('react-native-gesture-handler').GestureHandlerRootView;
+      })();
+
 function RootNavigator() {
   const { isAuthenticated, isLoading, user, bootstrap } = useAuthStore();
   const { colors } = useTheme();
   const router = useRouter();
   const segments = useSegments();
+  const [onboardingChecked, setOnboardingChecked] = useState(false);
+  const [onboardingDone, setOnboardingDone] = useState(false);
+
+  useThemeBootstrap();
 
   useEffect(() => {
     bootstrap().catch(() => {});
+    storage
+      .getBool(STORAGE_KEYS.ONBOARDING_DONE)
+      .then((done) => {
+        setOnboardingDone(!!done);
+        setOnboardingChecked(true);
+      })
+      .catch(() => setOnboardingChecked(true));
   }, []);
 
   useEffect(() => {
-    if (isLoading) return;
+    if (isLoading || !onboardingChecked) return;
     const seg0 = segments[0] ?? '';
     const inAuth = seg0 === 'login' || seg0 === 'register';
     const inOnboarding = seg0 === 'onboarding' || seg0 === 'profile-setup';
-    let onboardingDone = false;
-    try {
-      onboardingDone = storage.getBoolean(STORAGE_KEYS.ONBOARDING_DONE) ?? false;
-    } catch {}
 
     if (!onboardingDone && seg0 !== 'onboarding') {
       router.replace('/onboarding');
@@ -64,9 +74,9 @@ function RootNavigator() {
     if (isAuthenticated && (inAuth || seg0 === 'onboarding')) {
       router.replace('/(tabs)');
     }
-  }, [isLoading, isAuthenticated, user, segments]);
+  }, [isLoading, isAuthenticated, user, segments, onboardingChecked, onboardingDone]);
 
-  if (isLoading) {
+  if (isLoading || !onboardingChecked) {
     return (
       <View
         style={{
@@ -82,7 +92,7 @@ function RootNavigator() {
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false, animation: 'slide_from_right' }}>
+    <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
       <Stack.Screen name="onboarding" />
       <Stack.Screen name="login" />
@@ -98,10 +108,10 @@ function RootNavigator() {
 
 export default function RootLayout() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <RootContainer style={{ flex: 1 }}>
       <QueryClientProvider client={queryClient}>
         <RootNavigator />
       </QueryClientProvider>
-    </GestureHandlerRootView>
+    </RootContainer>
   );
 }

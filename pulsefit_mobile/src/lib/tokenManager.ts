@@ -1,27 +1,24 @@
-/** Native uchun JWT — Expo SecureStore. Web build'da tokenManager.web.ts ishlatiladi. */
-import * as SecureStore from 'expo-secure-store';
-
-const ACCESS_KEY = 'pulsefit_access';
-const REFRESH_KEY = 'pulsefit_refresh';
+/** Universal JWT saqlash — AsyncStorage (web va native uchun bir xil). */
+import { storage, STORAGE_KEYS } from './storage';
 
 export async function setTokens(access: string, refresh: string): Promise<void> {
-  await SecureStore.setItemAsync(ACCESS_KEY, access);
-  await SecureStore.setItemAsync(REFRESH_KEY, refresh);
+  await storage.setItem(STORAGE_KEYS.ACCESS_TOKEN, access);
+  await storage.setItem(STORAGE_KEYS.REFRESH_TOKEN, refresh);
 }
 
 export async function getAccessToken(): Promise<string | null> {
-  return SecureStore.getItemAsync(ACCESS_KEY);
+  return storage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
 }
 
 export async function getRefreshToken(): Promise<string | null> {
-  return SecureStore.getItemAsync(REFRESH_KEY);
+  return storage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
 }
 
 export async function clearTokens(): Promise<void> {
-  await SecureStore.deleteItemAsync(ACCESS_KEY);
-  await SecureStore.deleteItemAsync(REFRESH_KEY);
+  await storage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+  await storage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
 }
 
 export async function updateAccessToken(access: string): Promise<void> {
-  await SecureStore.setItemAsync(ACCESS_KEY, access);
+  await storage.setItem(STORAGE_KEYS.ACCESS_TOKEN, access);
 }

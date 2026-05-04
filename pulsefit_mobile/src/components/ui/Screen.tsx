@@ -6,6 +6,7 @@ import {
   StyleSheet,
   View,
   ViewStyle,
+  useWindowDimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -18,7 +19,10 @@ interface Props {
   padded?: boolean;
   style?: ViewStyle;
   edges?: ('top' | 'bottom' | 'left' | 'right')[];
+  maxWidth?: number;
 }
+
+const DEFAULT_MAX_WIDTH = 480;
 
 export function Screen({
   children,
@@ -26,21 +30,49 @@ export function Screen({
   padded = true,
   style,
   edges = ['top', 'left', 'right'],
+  maxWidth = DEFAULT_MAX_WIDTH,
 }: Props) {
   const { colors, isDark } = useTheme();
+  const { width } = useWindowDimensions();
 
-  const Container: any = scroll ? ScrollView : View;
-  const containerProps = scroll
-    ? {
-        contentContainerStyle: [
-          padded && { padding: SPACING.lg },
-          { flexGrow: 1 },
-          style,
-        ],
-        showsVerticalScrollIndicator: false,
-        keyboardShouldPersistTaps: 'handled' as const,
-      }
-    : { style: [styles.flex, padded && { padding: SPACING.lg }, style] };
+  // Web desktop'da kontentni markazlashtir + max-width berib qo'yamiz
+  const isWebDesktop = Platform.OS === 'web' && width > maxWidth;
+  const sidePad = isWebDesktop ? Math.max((width - maxWidth) / 2, 0) : 0;
+  const innerPad = padded ? SPACING.lg : 0;
+
+  const content = scroll ? (
+    <ScrollView
+      contentContainerStyle={[
+        {
+          flexGrow: 1,
+          paddingTop: innerPad,
+          paddingBottom: innerPad,
+          paddingLeft: innerPad + sidePad,
+          paddingRight: innerPad + sidePad,
+        },
+        style,
+      ]}
+      showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
+    >
+      {children}
+    </ScrollView>
+  ) : (
+    <View
+      style={[
+        styles.flex,
+        {
+          paddingTop: innerPad,
+          paddingBottom: innerPad,
+          paddingLeft: innerPad + sidePad,
+          paddingRight: innerPad + sidePad,
+        },
+        style,
+      ]}
+    >
+      {children}
+    </View>
+  );
 
   return (
     <SafeAreaView
@@ -52,7 +84,7 @@ export function Screen({
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={styles.flex}
       >
-        <Container {...containerProps}>{children}</Container>
+        {content}
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

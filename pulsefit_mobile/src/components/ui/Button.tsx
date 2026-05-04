@@ -8,7 +8,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import * as Haptics from 'expo-haptics';
+import * as haptics from '@/lib/haptics';
 import { useTheme } from '@/hooks/useTheme';
 import { RADIUS, SPACING, FONT_SIZE } from '@/constants/theme';
 
@@ -65,7 +65,7 @@ export function Button({
   return (
     <Pressable
       onPress={(e) => {
-        Haptics.selectionAsync().catch(() => {});
+        haptics.selection();
         onPress?.(e);
       }}
       disabled={disabled || loading}

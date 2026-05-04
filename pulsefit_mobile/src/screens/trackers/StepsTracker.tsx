@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Pedometer } from 'expo-sensors';
+import * as pedometer from '@/lib/pedometer';
 import { Ionicons } from '@expo/vector-icons';
 import { Button, Card, ProgressBar } from '@/components/ui';
 import { useTheme } from '@/hooks/useTheme';
@@ -30,22 +30,23 @@ export function StepsTracker() {
   });
 
   useEffect(() => {
-    let sub: any;
-    Pedometer.isAvailableAsync()
-      .then((ok) => {
-        setAvailable(ok);
-        if (!ok) return;
-        const start = new Date();
-        start.setHours(0, 0, 0, 0);
-        Pedometer.getStepCountAsync(start, new Date())
-          .then((res) => setPedoSteps(res?.steps ?? null))
-          .catch(() => {});
-        sub = Pedometer.watchStepCount((r) => {
-          setPedoSteps((s) => (s ?? 0) + r.steps);
-        });
-      })
-      .catch(() => setAvailable(false));
-    return () => sub?.remove?.();
+    let sub: pedometer.PedometerSubscription | null = null;
+    let cancelled = false;
+    (async () => {
+      const ok = await pedometer.isAvailable();
+      if (cancelled) return;
+      setAvailable(ok);
+      if (!ok) return;
+      const steps = await pedometer.getStepsToday();
+      if (steps != null && !cancelled) setPedoSteps(steps);
+      sub = await pedometer.watchSteps((r) => {
+        setPedoSteps((s) => (s ?? 0) + r.steps);
+      });
+    })();
+    return () => {
+      cancelled = true;
+      sub?.remove();
+    };
   }, []);
 
   return (

@@ -1,11 +1,10 @@
 import React, { useState, useRef } from 'react';
 import {
-  Dimensions,
   FlatList,
-  Image,
   StyleSheet,
   Text,
   View,
+  useWindowDimensions,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -13,8 +12,6 @@ import { Button, Screen } from '@/components/ui';
 import { useTheme } from '@/hooks/useTheme';
 import { storage, STORAGE_KEYS } from '@/lib/storage';
 import { FONT_SIZE, SPACING } from '@/constants/theme';
-
-const { width } = Dimensions.get('window');
 
 const slides = [
   {
@@ -37,11 +34,13 @@ const slides = [
 export default function OnboardingScreen() {
   const { colors } = useTheme();
   const router = useRouter();
+  const { width } = useWindowDimensions();
+  const slideW = Math.min(width, 480);
   const [index, setIndex] = useState(0);
   const ref = useRef<FlatList>(null);
 
-  const finish = () => {
-    storage.set(STORAGE_KEYS.ONBOARDING_DONE, true);
+  const finish = async () => {
+    await storage.setBool(STORAGE_KEYS.ONBOARDING_DONE, true);
     router.replace('/login');
   };
 
@@ -64,10 +63,11 @@ export default function OnboardingScreen() {
           pagingEnabled
           showsHorizontalScrollIndicator={false}
           onMomentumScrollEnd={(e) => {
-            setIndex(Math.round(e.nativeEvent.contentOffset.x / width));
+            setIndex(Math.round(e.nativeEvent.contentOffset.x / slideW));
           }}
+          getItemLayout={(_, i) => ({ length: slideW, offset: slideW * i, index: i })}
           renderItem={({ item }) => (
-            <View style={[styles.slide, { width }]}>
+            <View style={[styles.slide, { width: slideW }]}>
               <View
                 style={[
                   styles.iconBox,
