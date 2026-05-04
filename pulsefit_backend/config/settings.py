@@ -171,22 +171,37 @@ SIMPLE_JWT = {
 
 # CORS
 CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', default=True, cast=bool)
-CORS_ALLOWED_ORIGINS = config(
-    'CORS_ALLOWED_ORIGINS',
-    default='http://localhost:8081,http://localhost:19006',
-    cast=Csv(),
+
+
+def _valid_origins(raw: str) -> list[str]:
+    """Faqat scheme bilan to'g'ri originlarni qoldiradi. '*' va boshlarini olib tashlaydi."""
+    return [
+        o.strip()
+        for o in raw.split(',')
+        if o.strip().startswith(('http://', 'https://'))
+    ]
+
+
+CORS_ALLOWED_ORIGINS = _valid_origins(
+    config('CORS_ALLOWED_ORIGINS', default='http://localhost:8081,http://localhost:19006')
 )
 CORS_ALLOW_CREDENTIALS = True
+# Mobil ilovalar (Expo Go) origin yubormaydi — regex bilan ham qo'shamiz
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r'^exp://.*$',
+    r'^https?://localhost(:\d+)?$',
+    r'^https?://192\.168\.\d+\.\d+(:\d+)?$',
+    r'^https?://10\.\d+\.\d+\.\d+(:\d+)?$',
+]
 
 # CSRF trusted origins (production uchun)
-CSRF_TRUSTED_ORIGINS = config(
-    'CSRF_TRUSTED_ORIGINS',
-    default='http://localhost:8081',
-    cast=Csv(),
+CSRF_TRUSTED_ORIGINS = _valid_origins(
+    config('CSRF_TRUSTED_ORIGINS', default='http://localhost:8081')
 )
 if RAILWAY_DOMAIN:
     domain = RAILWAY_DOMAIN.replace('https://', '').replace('http://', '')
     CSRF_TRUSTED_ORIGINS.append(f'https://{domain}')
+    CORS_ALLOWED_ORIGINS.append(f'https://{domain}')
 
 
 # Swagger / OpenAPI
