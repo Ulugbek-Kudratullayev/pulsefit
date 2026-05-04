@@ -82,15 +82,35 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
-# Database — SQLite (kurs ishi uchun)
-# Railway production'da volume mount path: /data/db.sqlite3
-DB_DIR = Path(os.environ.get('SQLITE_DIR', BASE_DIR))
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': DB_DIR / 'db.sqlite3',
+# Database
+# Production (Railway PostgreSQL): DATABASE_URL env var orqali
+# Lokal: SQLite (BASE_DIR/db.sqlite3) yoki SQLITE_DIR
+DATABASE_URL = os.environ.get('DATABASE_URL')
+if DATABASE_URL:
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=False,
+        ),
     }
-}
+else:
+    DB_DIR = Path(os.environ.get('SQLITE_DIR', BASE_DIR))
+    # Agar papka yozilmaydigan bo'lsa /tmp'ga fallback (Railway uchun)
+    try:
+        DB_DIR.mkdir(parents=True, exist_ok=True)
+        _t = DB_DIR / '.write_test'
+        _t.write_text('ok')
+        _t.unlink()
+    except (OSError, PermissionError):
+        DB_DIR = Path('/tmp')
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': DB_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Custom user model
