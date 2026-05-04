@@ -66,6 +66,7 @@ export function Input({
           style={[
             styles.input,
             { color: colors.text, fontSize: FONT_SIZE.base },
+            { outlineStyle: 'none' } as any,
             rest.style as any,
           ]}
         />

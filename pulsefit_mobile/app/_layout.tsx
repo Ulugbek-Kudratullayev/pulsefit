@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Platform, ActivityIndicator, View } from 'react-native';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import '@/lib/i18n';
 import { useAuthStore } from '@/stores/authStore';
+import { useOnboardingStore } from '@/stores/onboardingStore';
 import { useTheme, useThemeBootstrap } from '@/hooks/useTheme';
-import { storage, STORAGE_KEYS } from '@/lib/storage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,7 +18,6 @@ const queryClient = new QueryClient({
   },
 });
 
-// Native: GestureHandler, Web: oddiy View
 const RootContainer: React.ComponentType<{ children: React.ReactNode; style?: any }> =
   Platform.OS === 'web'
     ? ({ children, style }) => <View style={style}>{children}</View>
@@ -29,23 +28,18 @@ const RootContainer: React.ComponentType<{ children: React.ReactNode; style?: an
 
 function RootNavigator() {
   const { isAuthenticated, isLoading, user, bootstrap } = useAuthStore();
+  const onboardingDone = useOnboardingStore((s) => s.done);
+  const onboardingChecked = useOnboardingStore((s) => s.checked);
+  const loadOnboarding = useOnboardingStore((s) => s.load);
   const { colors } = useTheme();
   const router = useRouter();
   const segments = useSegments();
-  const [onboardingChecked, setOnboardingChecked] = useState(false);
-  const [onboardingDone, setOnboardingDone] = useState(false);
 
   useThemeBootstrap();
 
   useEffect(() => {
     bootstrap().catch(() => {});
-    storage
-      .getBool(STORAGE_KEYS.ONBOARDING_DONE)
-      .then((done) => {
-        setOnboardingDone(!!done);
-        setOnboardingChecked(true);
-      })
-      .catch(() => setOnboardingChecked(true));
+    loadOnboarding().catch(() => {});
   }, []);
 
   useEffect(() => {

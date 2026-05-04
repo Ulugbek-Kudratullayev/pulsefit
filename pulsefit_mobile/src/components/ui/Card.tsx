@@ -1,5 +1,5 @@
-import React from 'react';
-import { Pressable, StyleSheet, View, ViewStyle } from 'react-native';
+import React, { useState } from 'react';
+import { Platform, Pressable, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTheme } from '@/hooks/useTheme';
 import { RADIUS, SHADOW, SPACING } from '@/constants/theme';
 
@@ -10,25 +10,51 @@ interface Props {
   padded?: boolean;
 }
 
+const isWeb = Platform.OS === 'web';
+
 export function Card({ children, style, onPress, padded = true }: Props) {
   const { colors } = useTheme();
-  const Wrap: any = onPress ? Pressable : View;
+  const [hovered, setHovered] = useState(false);
+
+  if (!onPress) {
+    return (
+      <View
+        style={[
+          styles.base,
+          SHADOW.sm,
+          {
+            backgroundColor: colors.surface,
+            padding: padded ? SPACING.lg : 0,
+          },
+          style,
+        ]}
+      >
+        {children}
+      </View>
+    );
+  }
+
   return (
-    <Wrap
+    <Pressable
       onPress={onPress}
+      onHoverIn={isWeb ? () => setHovered(true) : undefined}
+      onHoverOut={isWeb ? () => setHovered(false) : undefined}
       style={({ pressed }: any) => [
         styles.base,
         SHADOW.sm,
+        isWeb && ({ cursor: 'pointer', transitionDuration: '150ms' } as any),
         {
           backgroundColor: colors.surface,
           padding: padded ? SPACING.lg : 0,
-          opacity: pressed ? 0.95 : 1,
+          opacity: pressed ? 0.92 : 1,
+          transform: [{ scale: hovered && !pressed ? 1.005 : 1 }],
         },
+        hovered && !pressed && SHADOW.md,
         style,
       ]}
     >
       {children}
-    </Wrap>
+    </Pressable>
   );
 }
 
